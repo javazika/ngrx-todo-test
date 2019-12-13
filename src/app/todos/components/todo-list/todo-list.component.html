@@ -1,0 +1,59 @@
+<div class="container-fluid" *ngIf="todos">
+  <div class="row">
+
+    <div class="col-12">
+
+      <div class="card mt-5">
+        <div class="card-header">
+          <h1 class="display-6 d-inline">Todo App</h1>
+          <button (click)="onAdd()" type="button" class="btn btn-success btn-sm float-right"><i class="fas fa-plus-circle"></i></button>
+        </div>
+        <div class="card-body">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Title</th>
+                <th>UserId</th>
+                <th>Action</th>
+              </tr>
+              <tr *ngIf="isForm">
+                <th>
+                  <span>{{todo.id != 0 ? todo.id : '###'}}</span>
+                </th>
+                <th>
+                  <input type="text" [(ngModel)]="todo.title" class="form-control">
+                </th>
+                <th>
+                  <input type="text" class="form-control" value="YOU" readonly>
+                </th>
+                <th>
+                  <button (click)="onSave()" type="button" class="btn btn-success btn-sm"><i class="fas fa-save"></i></button>
+                  <button (click)="onCancel()" type="button" class="btn btn-secondary btn-sm"><i class="fas fa-window-close"></i></button>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let todo of todos | paginate: { itemsPerPage: 10, currentPage: p }">
+                <th scope="row">{{ todo.id }}</th>
+                <td>{{ todo.title }}</td>
+                <td>{{ todo.userId | number}}</td>
+                <td>
+                  <button (click)="onEdit(todo)" type="button" class="btn btn-primary btn-sm"><i class="fas fa-pen-square"></i></button>
+                  <button (click)="onDelete(todo.id)" type="button" class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i></button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <pagination-controls (pageChange)="p = $event"></pagination-controls>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+<div [ngClass]="bgClass" class="msg-info" *ngIf="message">
+  {{message}}
+</div>
